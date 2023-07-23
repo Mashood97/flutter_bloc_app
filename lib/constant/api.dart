@@ -12,4 +12,5 @@ class ApiConfiguration {
 
   static const String getPosts = "/posts";
   static const String getTopHeadlines = "/top-headlines";
+  static const String seachHeadlines = "/everything";
 }

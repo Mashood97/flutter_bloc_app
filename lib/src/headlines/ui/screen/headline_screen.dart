@@ -1,4 +1,4 @@
-import 'package:bloc_article_app/src/headlines/cubit/toggle_cubit.dart';
+import 'package:bloc_article_app/constant/responsive/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,28 +25,73 @@ class _PostScreenState extends State<PostScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Headlines",
+          "NewsiFY",
         ),
-        actions: [
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: const Icon(
-          //     Icons.switch_account,
-          //   ),
-          // ),
-          BlocBuilder<ToggleCubit, ToggleState>(
-            builder: (context, state) {
-              return Switch.adaptive(
-                value: state == ToggleState.on,
-                onChanged: (_) => context.read<ToggleCubit>().toggle(),
-              );
-            },
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(
+            getResponsiveValue(context, 50),
           ),
-        ],
+          child: TextField(
+            cursorColor: Colors.black,
+            cursorHeight: getResponsiveValue(
+              context,
+              20,
+            ),
+            onChanged: (val) async {
+              await context
+                  .read<HeadlineCubit>()
+                  .searchHeadlines(searchText: val);
+            },
+            decoration: InputDecoration(
+                filled: true,
+                constraints: BoxConstraints(
+                  maxWidth: getResponsiveValue(context, 600),
+                  maxHeight: getResponsiveValue(context, 75),
+                ),
+                fillColor: Colors.white70,
+                disabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade50,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.black54,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.black54,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Search"),
+          ),
+        ),
+        // actions: [
+        //   // IconButton(
+        //   //   onPressed: () {},
+        //   //   icon: const Icon(
+        //   //     Icons.switch_account,
+        //   //   ),
+        //   // ),
+        //   BlocBuilder<ToggleCubit, ToggleState>(
+        //     builder: (context, state) {
+        //       return Switch.adaptive(
+        //         value: state == ToggleState.on,
+        //         onChanged: (_) => context.read<ToggleCubit>().toggle(),
+        //       );
+        //     },
+        //   ),
+        // ],
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(
+            getResponsiveValue(context, 16),
+          ),
           child: BlocConsumer<HeadlineCubit, HeadlineState>(
             builder: (context, state) {
               if (state is HeadlineInitial) {
@@ -64,9 +109,9 @@ class _PostScreenState extends State<PostScreen> {
                   itemBuilder: (ctx, index) => ListTile(
                     title: Text(
                       state.headline[index].headlineTitle ?? "Title",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
+                      style: TextStyle(
+                        fontSize: getResponsiveValue(context, 18),
+                        color: Colors.black87,
                         fontWeight: FontWeight.w700,
                         height: 1.5,
                       ),
@@ -75,8 +120,8 @@ class _PostScreenState extends State<PostScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Text(
                         state.headline[index].headlineDescription ?? "Title",
-                        style: const TextStyle(
-                          fontSize: 12,
+                        style: TextStyle(
+                          fontSize: getResponsiveValue(context, 14),
                           color: Colors.black54,
                           fontWeight: FontWeight.w400,
                           wordSpacing: 1.5,
@@ -96,6 +141,8 @@ class _PostScreenState extends State<PostScreen> {
             listener: (context, state) {
               //Show Errors.
               if (state is HeadlineError) {
+                ScaffoldMessenger.of(context).clearSnackBars();
+
                 var snackBar = SnackBar(
                   content: Text(state.message),
                 );

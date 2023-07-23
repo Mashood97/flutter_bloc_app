@@ -11,10 +11,31 @@ class HeadlineCubit extends Cubit<HeadlineState> {
   final HeadlineRepository _postRepository;
   HeadlineCubit(this._postRepository) : super(const HeadlineInitial());
 
-  Future<void> getTopHeadlines() async {
+  Future<void> getTopHeadlines({String headlineCategory = "business"}) async {
     try {
       emit(const HeadlineLoading());
-      final headlines = await _postRepository.getAllTopHeadlines();
+      final headlines = await _postRepository.getAllTopHeadlines(
+        headlineCategory: headlineCategory,
+      );
+      if (headlines.isNotEmpty) {
+        emit(HeadlineLoaded(headlines));
+      } else {
+        emit(const HeadlineError(
+            "Something went wrong, please try again later"));
+      }
+    } on ResponseError catch (e) {
+      emit(
+        HeadlineError(e.errorStatus),
+      );
+    }
+  }
+
+  Future<void> searchHeadlines({String searchText = ""}) async {
+    try {
+      emit(const HeadlineLoading());
+      final headlines = await _postRepository.searchHeadlines(
+        searchText: searchText,
+      );
       if (headlines.isNotEmpty) {
         emit(HeadlineLoaded(headlines));
       } else {

@@ -14,11 +14,57 @@ class HeadlineRepositoryImplementation implements HeadlineRepository {
   final postService = HeadlineService.create(ChopperClientInstance.client);
 
   @override
-  Future<List<HeadlineModel>> getAllTopHeadlines() async {
+  Future<List<HeadlineModel>> getAllTopHeadlines({
+    String headlineCategory = "business",
+  }) async {
     try {
       final response = await postService.getTopHeadlines(
         apiKey: ApiConfiguration.apiKey,
+        headlineCategory: headlineCategory,
       );
+
+      if (response.isSuccessful == true) {
+        // Successful request
+        final body = response.bodyString;
+        if (body.isNotEmpty == true) {
+          final decodedBody = jsonDecode(body);
+          final decodedResponse = ListResponse<HeadlineModel>.fromJson(
+              decodedBody, (json) => HeadlineModel.fromJson(json),
+              keyName: "articles");
+          if (decodedResponse.statusMessage == "ok") {
+            return decodedResponse.data ?? [];
+          }
+        }
+
+        return [];
+      } else {
+        // Error code received from server
+        final code = response.statusCode;
+        final error = response.error as ResponseError;
+        log("ERROR CODE:: $code ==> Error Msg ==>> ${error.toString()}");
+
+        throw error;
+      }
+    } on ResponseError catch (e) {
+      log("Catch Response Error Block==> Error Msg ==>> $e");
+
+      throw ResponseError(
+        errorStatus: e.errorStatus,
+      );
+    } catch (e) {
+      log("Catch Block==> Error Msg ==>> $e");
+
+      throw ResponseError(
+        errorStatus: e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<HeadlineModel>> searchHeadlines({String searchText = ""}) async {
+    try {
+      final response = await postService.searchHeadlines(
+          apiKey: ApiConfiguration.apiKey, searchQuery: searchText);
 
       if (response.isSuccessful == true) {
         // Successful request

@@ -36,4 +36,23 @@ class _$HeadlineService extends HeadlineService {
     );
     return client.send<Map<dynamic, dynamic>, Map<dynamic, dynamic>>($request);
   }
+
+  @override
+  Future<Response<Map<dynamic, dynamic>>> searchHeadlines({
+    required String apiKey,
+    String searchQuery = "",
+  }) {
+    final Uri $url = Uri.parse('/top-headlines');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'apiKey': apiKey,
+      'q': searchQuery,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<Map<dynamic, dynamic>, Map<dynamic, dynamic>>($request);
+  }
 }

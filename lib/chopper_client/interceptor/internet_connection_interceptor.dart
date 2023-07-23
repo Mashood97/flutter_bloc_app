@@ -7,7 +7,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class InternetConnectionInterceptor extends RequestInterceptor {
   @override
   FutureOr<Request> onRequest(Request request) async {
-    log("CALLED INTERNET ${request.url}");
     final connection = await Connectivity().checkConnectivity();
     if (connection == ConnectivityResult.none) {
       throw NoInternetConnectionException();

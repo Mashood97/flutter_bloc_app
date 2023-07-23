@@ -19,4 +19,12 @@ abstract class HeadlineService extends ChopperService {
     @Query("country") String countryCode = "us",
     @Query("category") String headlineCategory = "business",
   });
+
+  @Get(
+    path: ApiConfiguration.getTopHeadlines,
+  )
+  Future<Response<Map>> searchHeadlines({
+    @Query("apiKey") required String apiKey,
+    @Query("q") String searchQuery = "",
+  });
 }

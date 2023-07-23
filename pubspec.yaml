@@ -44,6 +44,7 @@ dependencies:
   connectivity_plus: ^4.0.1
   freezed:
   freezed_annotation:
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
