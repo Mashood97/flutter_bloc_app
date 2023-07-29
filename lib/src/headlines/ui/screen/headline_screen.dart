@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:bloc_article_app/constant/responsive/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../widgets/loader.dart';
 import '../../cubit/headline_cubit.dart';
+import '../../cubit/toggle_cubit.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -38,10 +41,15 @@ class _PostScreenState extends State<PostScreen> {
               20,
             ),
             onChanged: (val) async {
-              await context
-                  .read<HeadlineCubit>()
-                  .searchHeadlines(searchText: val);
+              if (val.isNotEmpty) {
+                await context
+                    .read<HeadlineCubit>()
+                    .searchHeadlines(searchText: val);
+              } else {
+                await context.read<HeadlineCubit>().getTopHeadlines();
+              }
             },
+            onSubmitted: null,
             decoration: InputDecoration(
                 filled: true,
                 constraints: BoxConstraints(
@@ -70,22 +78,26 @@ class _PostScreenState extends State<PostScreen> {
                 hintText: "Search"),
           ),
         ),
-        // actions: [
-        //   // IconButton(
-        //   //   onPressed: () {},
-        //   //   icon: const Icon(
-        //   //     Icons.switch_account,
-        //   //   ),
-        //   // ),
-        //   BlocBuilder<ToggleCubit, ToggleState>(
-        //     builder: (context, state) {
-        //       return Switch.adaptive(
-        //         value: state == ToggleState.on,
-        //         onChanged: (_) => context.read<ToggleCubit>().toggle(),
-        //       );
-        //     },
-        //   ),
-        // ],
+        actions: [
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(
+          //     Icons.switch_account,
+          //   ),
+          // ),
+          BlocBuilder<ToggleCubit, ToggleState>(
+            builder: (context, state) {
+              return Switch.adaptive(
+                value: state == ToggleState.on,
+                inactiveTrackColor: Colors.grey.shade300,
+                inactiveThumbColor: Colors.grey,
+                activeTrackColor: Colors.grey.shade300,
+                activeColor: Colors.amber,
+                onChanged: (_) => context.read<ToggleCubit>().toggle(),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
