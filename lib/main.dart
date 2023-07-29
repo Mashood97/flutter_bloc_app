@@ -1,3 +1,5 @@
+import 'package:beamer/beamer.dart';
+import 'package:bloc_article_app/routing/beamer_routing_delegate.dart';
 import 'package:bloc_article_app/src/headlines/cubit/toggle_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,16 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'chopper_client/chopper_client.dart';
 import 'src/headlines/cubit/headline_cubit.dart';
 import 'src/headlines/repository/post_repo_impl.dart';
-import 'src/headlines/ui/screen/headline_screen.dart';
 
 void main() {
   ChopperClientInstance.initializeChopperClient();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
+  final beamerRouterDelegate = BeamerRoutingDelegate();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,8 +31,8 @@ class MyApp extends StatelessWidget {
           create: (context) => ToggleCubit(),
         ),
       ],
-      child: MaterialApp(
-        title: 'NewsiFy',
+      child: MaterialApp.router(
+        title: 'Bloc/Cubit Apps',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primaryColor: Colors.white,
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
               color: Colors.white,
               elevation: 0,
               centerTitle: true,
-              iconTheme: IconThemeData(
+              iconTheme: const IconThemeData(
                 color: Colors.black,
               ),
               titleTextStyle:
@@ -50,7 +52,9 @@ class MyApp extends StatelessWidget {
               trackColor: MaterialStateProperty.all(Colors.white),
               thumbColor: MaterialStateProperty.all(Colors.amber),
             )),
-        home: const PostScreen(),
+        routeInformationParser: BeamerParser(),
+        routerDelegate: beamerRouterDelegate.routerDelegate,
+        // home: const PostScreen(),
       ),
     );
   }

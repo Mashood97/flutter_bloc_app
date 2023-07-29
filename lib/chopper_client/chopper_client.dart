@@ -4,7 +4,7 @@ import 'package:bloc_article_app/src/headlines/service/headline_chopper_service.
 import 'package:chopper/chopper.dart';
 
 import 'converter/json_serializable_converter.dart';
-import 'dummy_model.dart';
+
 import 'interceptor/header_interceptor.dart';
 import 'interceptor/internet_connection_interceptor.dart';
 
