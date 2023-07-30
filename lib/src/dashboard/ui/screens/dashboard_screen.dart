@@ -49,9 +49,10 @@ class _DashboardBaseScreenState extends State<DashboardBaseScreen> {
             Icons.money,
           ),
           onTap: () {
-            // context.beamToNamed(
-            //   AppRouteNames().headlineRoute,
-            // );
+            context.beamToNamed(
+              AppRouteNames().expenseAppRoute,
+              data: AppColors().expenseAppColorSwatch,
+            );
           },
         ),
         DashboardItemModel(
@@ -112,6 +113,50 @@ class _DashboardBaseScreenState extends State<DashboardBaseScreen> {
           itemCount: _items.length,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 14.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Version: 1.0.0",
+              style: TextStyle(
+                fontSize: getResponsiveValue(context, 14),
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Made with ❤️ by Mashood97",
+              style: TextStyle(
+                fontSize: getResponsiveValue(context, 14),
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+      // bottomNavigationBar: Align(
+      //   alignment: Alignment.bottomCenter,
+      //   child: Text(
+      //     "Version: 1.0.0",
+      //     style: TextStyle(
+      //       fontSize: getResponsiveValue(context, 14),
+      //       color: Colors.black87,
+      //       fontWeight: FontWeight.w500,
+      //       height: 1.5,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

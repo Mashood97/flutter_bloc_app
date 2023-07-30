@@ -11,6 +11,7 @@ import 'src/headlines/repository/post_repo_impl.dart';
 
 void main() {
   ChopperClientInstance.initializeChopperClient();
+
   runApp(MyApp());
 }
 

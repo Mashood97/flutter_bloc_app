@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:bloc_article_app/src/bmi/cubit/bmi_cubit.dart';
 import 'package:bloc_article_app/src/dashboard/ui/screens/dashboard_screen.dart';
+import 'package:bloc_article_app/src/expense/ui/screens/expense_screen.dart';
 import 'package:bloc_article_app/src/headlines/ui/screen/headline_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +29,7 @@ class BeamerRoutingDelegate {
           BeamPage(
             key: ValueKey(state.uri),
             child: const PostScreen(),
+            type: BeamPageType.slideTopTransition,
           ),
       AppRouteNames().bmiCalculatorAppRoute: (context, BeamState state, data) {
         final colorSwatch = data as ColorSwatch;
@@ -42,7 +44,20 @@ class BeamerRoutingDelegate {
           ),
           type: BeamPageType.slideTransition,
         );
-      }
+      },
+      AppRouteNames().expenseAppRoute: (context, state, data) {
+        final colorSwatch = data as ColorSwatch;
+        return BeamPage(
+          key: ValueKey(state.uri),
+          child: BlocProvider(
+            create: (_) => BmiCubit(),
+            child: ExpenseScreen(
+              colorSwatch: colorSwatch,
+            ),
+          ),
+          type: BeamPageType.fadeTransition,
+        );
+      },
     }
         // '/': (context, state, data) => HomeScreen(),
         // '/books': (context, state, data) => BooksScreen(),
@@ -75,4 +90,5 @@ class AppRouteNames {
   String initialRoute = "/dashboard";
   String headlineRoute = "/headlines";
   String bmiCalculatorAppRoute = "/bmi-App";
+  String expenseAppRoute = "/expense-App";
 }

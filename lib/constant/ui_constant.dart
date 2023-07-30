@@ -9,6 +9,15 @@ class AppColors {
     "headingColor": Color(0xFF212121),
     "successColor": Color(0xFF8BC34A),
   });
+
+  final expenseAppColorSwatch = const ColorSwatch(0xFF3F51B5, {
+    "inputBorder": Color(0xFF303F9F),
+    "disabledBorder": Color(0xFFBDBDBD),
+    "btnColor": Color(0xFFFF5252),
+    "headingColor": Color(0xFF212121),
+    "subHeadingColor": Color(0xFF757575),
+    "successColor": Color(0xFFC5CAE9),
+  });
 }
 
 class AllowDigitsOnly extends TextInputFormatter {
